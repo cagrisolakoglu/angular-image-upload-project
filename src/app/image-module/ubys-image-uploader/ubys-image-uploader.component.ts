@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { base64ToFile, Dimensions, ImageCroppedEvent, ImageTransform } from 'ngx-image-cropper';
+import { MegaMenuItem } from 'primeng/api';
 
 interface Image {
   name: string;
@@ -30,21 +31,96 @@ export class UbysImageUploaderComponent implements OnInit {
   public transform: ImageTransform = {};
 
   public imageBase64String: any = "";
+  public displayModal: boolean = false;
 
+  cropMenuItems: MegaMenuItem[] = [
+    {
+      label: 'Kes',
+      icon: 'pi pi-image',
+      command: (event) => {
+        this.crop();
+      },
+      styleClass: 'p-button-success',
+    },
+    {
+      label: 'Sola Döndür',
+      icon: 'pi pi-directions-alt',
+      command: (event) => {
+        this.rotateLeft();
+      }
+    },
+    {
+      label: 'Sağa Döndür',
+      icon: 'pi pi-directions',
+      command: (event) => {
+        this.rotateRight();
+      }
+    },
+    {
+      label: 'Yatay Çevir',
+      icon: 'pi pi-ellipsis-h',
+      command: (event) => {
+        this.flipHorizontal();
+      }
+    },
+    {
+      label: 'Dikey Çevir',
+      icon: 'pi pi-ellipsis-v',
+      command: (event) => {
+        this.flipVertical();
+      }
+    },
 
+    {
+      label: 'Küçült',
+      icon: 'pi pi-search-minus',
+      command: (event) => {
+        this.zoomOut();
+      }
+    },
+    {
+      label: 'Büyüt',
+      icon: 'pi pi-search-plus',
+      command: (event) => {
+        this.zoomIn();
+      }
+    },
+    {
+      label: "En Boy Oranı Değiştir",
+      icon: "pi pi-times",
+      command: (event) => {
+        this.containWithinAspectRatio = !this.containWithinAspectRatio;
+      },
+    },
+    {
+      label: 'Reset',
+      icon: 'pi pi-refresh',
+      command: (event) => {
+        this.resetImage();
+      }
+    },
+  ];
 
   @ViewChild('fileInput') fileInput: any;
   constructor() {
 
-
   }
-
-
 
   get image(): Image {
     this.imageLoaded();
     return this.images[this.images.length - 1];
   }
+
+  selectImageForCrop(image: any) {
+    const reader = new FileReader();
+    reader.readAsDataURL(image);
+    reader.onload = () => {
+      this.imageBase64String = reader.result as string;
+      this.displayModal = true;
+    };
+
+  }
+
 
   removeImage(image: Image) {
     this.images.splice(this.images.indexOf(image), 1);
@@ -56,15 +132,6 @@ export class UbysImageUploaderComponent implements OnInit {
 
 
   ngOnInit(): void {
-  }
-
-  selectImageForCrop(image: any) {
-    const reader = new FileReader();
-    reader.readAsDataURL(image);
-    reader.onload = () => {
-      this.imageBase64String = reader.result as string;
-    };
-
   }
 
 
@@ -96,16 +163,14 @@ export class UbysImageUploaderComponent implements OnInit {
   }
 
 
-
-  /** crop process */
-
   crop() {
     this.images.push({
       file: base64ToFile(this.croppedImage) as File,
       name: this.image.name,
       url: this.croppedImage,
     });
-    this.showCropper = false;
+    // this.showCropper = false;
+    this.displayModal = false;
   }
 
   fileChangeEvent(event: any): void {

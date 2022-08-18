@@ -5,17 +5,34 @@
       class="image-uploader__image-div"
       *ngFor="let image of images; index as i; first as isFirst"
     >
-      <img
-        class="image-uploader__image"
+      <!-- <img class="image-uploader__image" [src]="image.url" [alt]="image.name" [preview]="true" /> -->
+      <p-image
         [src]="image.url"
         [alt]="image.name"
-        (click)="selectImageForCrop(image.file)"
-      />
-      <a
-        class="image-uploader__image-remove-button"
-        (click)="removeImage(image)"
-        >X</a
+        width="150"
+        [preview]="true"
+        class="image-uploader__image"
       >
+      </p-image>
+
+      <button
+        pButton
+        pRipple
+        type="button"
+        icon="pi pi-times"
+        class="p-button-rounded p-button-danger p-button-sm image-uploader__image-remove-button"
+        (click)="removeImage(image)"
+      ></button>
+
+      <button
+        pButton
+        pRipple
+        type="button"
+        icon="pi pi-window-minimize"
+        class="p-button-rounded p-button-warning image-uploader__crop-button"
+        label="Crop"
+        (click)="selectImageForCrop(image.file)"
+      ></button>
     </div>
   </div>
   <div class="image-uploader__input-container">
@@ -27,47 +44,40 @@
       (change)="onFileChange($event)"
     />
 
-    <span class="p-buttonset">
-      <button pButton pRipple label="Save" icon="pi pi-check"></button>
-      <button pButton pRipple label="Delete" icon="pi pi-trash"></button>
-      <button pButton pRipple label="Cancel" icon="pi pi-times"></button>
-    </span>
-
-    <a class="image-uploader__upload-button" (click)="uploadFile($event)"
-      >Yükle</a
-    >
-    <a class="image-uploader__clear-button" (click)="clearFiles($event)"
-      >Temizle</a
-    >
+    <button
+      pButton
+      pRipple
+      type="button"
+      label="Yükle"
+      icon="pi pi-upload"
+      class="p-button-success p-button-sm"
+      (click)="uploadFile($event)"
+    ></button>
+    <button
+      pButton
+      pRipple
+      type="button"
+      label="Temizle"
+      icon="pi pi-trash"
+      class="p-button-danger p-button-sm"
+      (click)="clearFiles($event)"
+    ></button>
   </div>
 </div>
 
-<button (click)="rotateLeft()">Rotate left</button>
-<button (click)="rotateRight()">Rotate right</button>
-<button (click)="flipHorizontal()">Flip horizontal</button>
-<button (click)="flipVertical()">Flip vertical</button>
-<br />
-<br />
-<button (click)="toggleContainWithinAspectRatio()">
-  {{
-    containWithinAspectRatio
-      ? "Fill Aspect Ratio"
-      : "Contain Within Aspect Ratio"
-  }}
-</button>
-<button (click)="resetImage()">Reset image</button>
-<br />
-<br />
-<!-- <input
-  [(ngModel)]="rotation"  placeholder="rotation"
-  type="number"
-  (keyup)="updateRotation()"
-/> -->
-<button (click)="zoomOut()">Zoom -</button>
-<button (click)="zoomIn()">Zoom +</button>
-<button (click)="crop()">crope</button>
+<p-dialog
+  header="Resim Düzenleme"
+  [(visible)]="displayModal"
+  [modal]="true"
+  [style]="{ width: '80vw' }"
+  [baseZIndex]="10000"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <ng-template pTemplate="header">
+    <p-megaMenu [model]="cropMenuItems" style="width: 100%"> </p-megaMenu>
+  </ng-template>
 
-<div style="width: 500px">
   <image-cropper
     *ngIf="imageBase64String"
     [imageChangedEvent]="imageChangedEvent"
@@ -89,8 +99,25 @@
     (cropperReady)="cropperReady($event)"
     (loadImageFailed)="loadImageFailed()"
   ></image-cropper>
-</div>
-<img
-  [src]="croppedImage"
-  [style.border]="croppedImage ? '1px solid black' : 'none'"
-/>
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      pRipple
+      type="button"
+      label="Vazgeç"
+      class="p-button-primary p-button-sm"
+      icon="pi pi-times"
+      (click)="displayModal = false"
+    ></button>
+
+    <button
+      pButton
+      pRipple
+      type="button"
+      label="Kes"
+      class="p-button-warning p-button-sm"
+      icon="pi pi-image"
+      (click)="crop()"
+    ></button>
+  </ng-template>
+</p-dialog>
