@@ -16,7 +16,6 @@ interface Image {
 export class UbysImageUploaderComponent implements OnInit {
   @Input() images: Image[] = [];
   @Input() multiple: boolean = false;
-
   @Input() set image(image: Image) {
     this.images.push(image);
   }
@@ -34,14 +33,6 @@ export class UbysImageUploaderComponent implements OnInit {
   public displayModal: boolean = false;
 
   cropMenuItems: MegaMenuItem[] = [
-    {
-      label: 'Kes',
-      icon: 'pi pi-image',
-      command: (event) => {
-        this.crop();
-      },
-      styleClass: 'p-button-success',
-    },
     {
       label: 'Sola Döndür',
       icon: 'pi pi-directions-alt',

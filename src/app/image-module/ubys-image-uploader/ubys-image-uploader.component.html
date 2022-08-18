@@ -1,5 +1,6 @@
 <!-- // image uploader with crope -->
 <div class="image-uploader" style="margin: 20px">
+  <label class="image-uploader_label">Resim Yükleyici</label>
   <div class="image-uploader__image-container">
     <div
       class="image-uploader__image-div"
@@ -69,13 +70,13 @@
   header="Resim Düzenleme"
   [(visible)]="displayModal"
   [modal]="true"
-  [style]="{ width: '80vw' }"
+  [style]="{'width': '80vw'}"
   [baseZIndex]="10000"
   [draggable]="false"
   [resizable]="false"
 >
   <ng-template pTemplate="header">
-    <p-megaMenu [model]="cropMenuItems" style="width: 100%"> </p-megaMenu>
+    <p-megaMenu [model]="cropMenuItems"  [style]="{'width': '100%'}" > </p-megaMenu>
   </ng-template>
 
   <image-cropper
