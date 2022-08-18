@@ -5,6 +5,10 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ImageModuleModule } from './image-module/image-module.module';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+
+import { ButtonModule } from 'primeng/button';
+import { RippleModule } from 'primeng/ripple';
 
 @NgModule({
   declarations: [
@@ -12,9 +16,12 @@ import { ImageModuleModule } from './image-module/image-module.module';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     ImageModuleModule,
-    ImageCropperModule
+    ImageCropperModule,
+    ButtonModule,
+    RippleModule
   ],
   providers: [],
   bootstrap: [AppComponent]

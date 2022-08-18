@@ -26,6 +26,13 @@
       type="file"
       (change)="onFileChange($event)"
     />
+
+    <span class="p-buttonset">
+      <button pButton pRipple label="Save" icon="pi pi-check"></button>
+      <button pButton pRipple label="Delete" icon="pi pi-trash"></button>
+      <button pButton pRipple label="Cancel" icon="pi pi-times"></button>
+    </span>
+
     <a class="image-uploader__upload-button" (click)="uploadFile($event)"
       >Yükle</a
     >
@@ -60,9 +67,9 @@
 <button (click)="zoomIn()">Zoom +</button>
 <button (click)="crop()">crope</button>
 
-<div style="width: 500px;">
+<div style="width: 500px">
   <image-cropper
-  *ngIf="imageBase64String"
+    *ngIf="imageBase64String"
     [imageChangedEvent]="imageChangedEvent"
     [maintainAspectRatio]="false"
     [containWithinAspectRatio]="containWithinAspectRatio"
