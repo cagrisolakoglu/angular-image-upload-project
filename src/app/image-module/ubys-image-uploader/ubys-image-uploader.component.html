@@ -1,0 +1,89 @@
+<!-- // image uploader with crope -->
+<div class="image-uploader" style="margin: 20px">
+  <div class="image-uploader__image-container">
+    <div
+      class="image-uploader__image-div"
+      *ngFor="let image of images; index as i; first as isFirst"
+    >
+      <img
+        class="image-uploader__image"
+        [src]="image.url"
+        [alt]="image.name"
+        (click)="selectImageForCrop(image.file)"
+      />
+      <a
+        class="image-uploader__image-remove-button"
+        (click)="removeImage(image)"
+        >X</a
+      >
+    </div>
+  </div>
+  <div class="image-uploader__input-container">
+    <input
+      #fileInput
+      class="image-uploader__input"
+      multiple="multiple"
+      type="file"
+      (change)="onFileChange($event)"
+    />
+    <a class="image-uploader__upload-button" (click)="uploadFile($event)"
+      >Yükle</a
+    >
+    <a class="image-uploader__clear-button" (click)="clearFiles($event)"
+      >Temizle</a
+    >
+  </div>
+</div>
+
+<button (click)="rotateLeft()">Rotate left</button>
+<button (click)="rotateRight()">Rotate right</button>
+<button (click)="flipHorizontal()">Flip horizontal</button>
+<button (click)="flipVertical()">Flip vertical</button>
+<br />
+<br />
+<button (click)="toggleContainWithinAspectRatio()">
+  {{
+    containWithinAspectRatio
+      ? "Fill Aspect Ratio"
+      : "Contain Within Aspect Ratio"
+  }}
+</button>
+<button (click)="resetImage()">Reset image</button>
+<br />
+<br />
+<!-- <input
+  [(ngModel)]="rotation"  placeholder="rotation"
+  type="number"
+  (keyup)="updateRotation()"
+/> -->
+<button (click)="zoomOut()">Zoom -</button>
+<button (click)="zoomIn()">Zoom +</button>
+<button (click)="crop()">crope</button>
+
+<div style="width: 500px;">
+  <image-cropper
+  *ngIf="imageBase64String"
+    [imageChangedEvent]="imageChangedEvent"
+    [maintainAspectRatio]="false"
+    [containWithinAspectRatio]="containWithinAspectRatio"
+    [aspectRatio]="1 / 1"
+    [resizeToWidth]="256"
+    [cropperMinWidth]="128"
+    [onlyScaleDown]="true"
+    [roundCropper]="false"
+    [canvasRotation]="canvasRotation"
+    [transform]="transform"
+    [alignImage]="'center'"
+    [style.display]="showCropper ? null : 'none'"
+    [imageBase64]="imageBase64String"
+    format="png"
+    (imageCropped)="imageCropped($event)"
+    (imageLoaded)="imageLoaded()"
+    (cropperReady)="cropperReady($event)"
+    (loadImageFailed)="loadImageFailed()"
+  ></image-cropper>
+</div>
+<img
+  [src]="croppedImage"
+  [style.border]="croppedImage ? '1px solid black' : 'none'"
+/>
